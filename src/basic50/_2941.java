@@ -8,38 +8,34 @@ public class _2941 {
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         char[] arr = br.readLine().toCharArray();
-        int count = 0;
 
-        for (int i = 0; i < arr.length; i++) {
-            count++; // 우선 한 글자로 인정
+        int cnt = 0;
+        int length = arr.length;
 
-            if (i >= arr.length - 1) continue; // 마지막 글자면 다음 체크 생략
+        for (int i = 0; i < length; i++) {
 
-            char cur = arr[i];
-            char next = arr[i+1];
+            // 예외 - 마지막은 볼 필요가 없음
+            if (i == length - 1) {
+                cnt++;
+                break;
+            }
 
-            // '다음 글자'를 보고 한 세트라면 인덱스(i)를 추가로 점프
-            if (cur == 'c' && (next == '=' || next == '-')) i++;
-            else if (cur == 'd' && next == '-') i++;
-            else if (cur == 'd' && next == 'z' && i + 2 < arr.length && arr[i+2] == '=') i += 2;
-            else if ((cur == 'l' || cur == 'n') && next == 'j') i++;
-            else if ((cur == 's' || cur == 'z') && next == '=') i++;
+            char now = arr[i];
+            char nxt = arr[i + 1];
+
+            // 2글자
+            if (now == 'c' && (nxt == '-' || nxt == '=')) i++;
+            else if (nxt == 'j' && (now == 'l' || now == 'n')) i++;
+            else if (nxt == '=' && (now == 's' || now == 'z')) i++;
+            else if (now == 'd' && nxt == '-') i++;
+
+            // 예외 - 3글자
+            else if ((now == 'd' && nxt == 'z') && i + 2 < length && arr[i + 2] == '=') i += 2;
+
+            cnt++;
         }
 
-        System.out.println(count);
-
-            /**
-             * String[] croatiaAlphabets = {"c=", "c-", "dz=", "d-", "lj", "nj", "arr=", "z="};
-             *
-             *         for (String val : croatiaAlphabets) {
-             *             if (str.contains(val)) {
-             *                 str = str.replace(val, "!");
-             *             }
-             *         }
-             *
-             *         System.out.print(str.length());
-             */
+        System.out.print(cnt);
     }
 }
